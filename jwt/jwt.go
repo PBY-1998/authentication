@@ -6,8 +6,8 @@
 package jwt
 
 import (
-	"authentication"
 	"fmt"
+	"github.com/PBY-1998/authentication"
 	"github.com/golang-jwt/jwt/v4"
 	"strings"
 	"time"

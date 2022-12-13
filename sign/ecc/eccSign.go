@@ -6,13 +6,13 @@
 package ecc
 
 import (
-	"authentication/sign/hash"
 	"crypto/ecdsa"
 	"crypto/rand"
 	"crypto/x509"
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
+	"github.com/PBY-1998/authentication/sign/hash"
 	"math/big"
 	"runtime"
 )

@@ -6,13 +6,13 @@
 package rsa
 
 import (
-	"authentication/sign/hash"
 	"crypto"
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/base64"
 	"encoding/hex"
+	"github.com/PBY-1998/authentication/sign/hash"
 	"log"
 	"runtime"
 )

@@ -6,12 +6,12 @@
 package aes
 
 import (
-	"authentication"
 	"crypto/aes"
 	"crypto/cipher"
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
+	"github.com/PBY-1998/authentication"
 	"runtime"
 )
 

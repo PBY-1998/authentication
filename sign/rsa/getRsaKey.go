@@ -6,12 +6,12 @@
 package rsa
 
 import (
-	"authentication"
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/base64"
 	"encoding/hex"
+	"github.com/PBY-1998/authentication"
 )
 
 type RsaKey struct {
