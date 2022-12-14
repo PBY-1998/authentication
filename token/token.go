@@ -3,7 +3,7 @@
     @since: 2022/12/13
     @desc: //TODO
 **/
-package jwt
+package token
 
 import (
 	"fmt"
@@ -13,11 +13,11 @@ import (
 	"time"
 )
 
-type Jwt struct {
+type Token struct {
 	publicKey string
 }
 
-type Claims struct {
+type TokenClaims struct {
 	*jwt.StandardClaims
 	*User
 }
@@ -27,19 +27,19 @@ type User struct {
 	Info  interface{}
 }
 
-type Jwter interface {
-	GeneratorJwt(appId string, user interface{}) (string, error) // 生成JWT
-	ParseJwt(token string) (*Claims, error)                      // 解析JWT
+type Tokener interface {
+	GeneratorToken(appId string, user interface{}) (string, error) // 生成JWT
+	ParseToken(token string) (jwt.MapClaims, error)                // 解析JWT
 }
 
-func NewJwtToken(publicKey string) Jwter {
-	return &Jwt{
+func NewToken(publicKey string) Tokener {
+	return &Token{
 		publicKey: publicKey,
 	}
 }
 
-func (j *Jwt) GeneratorJwt(appId string, user interface{}) (string, error) {
-	claims := &Claims{
+func (j *Token) GeneratorToken(appId string, user interface{}) (string, error) {
+	claims := &TokenClaims{
 		StandardClaims: &jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Minute * 60 * 24 * 7).Unix(), // 过期时间
 			IssuedAt:  time.Now().Unix(),                                // 签发时间
@@ -54,7 +54,7 @@ func (j *Jwt) GeneratorJwt(appId string, user interface{}) (string, error) {
 	return token.SignedString([]byte(j.publicKey))
 }
 
-func (j *Jwt) ParseJwt(token string) (*Claims, error) {
+func (j *Token) ParseToken(token string) (jwt.MapClaims, error) {
 	tokens := strings.Split(token, " ")
 	if len(tokens) != 2 && !strings.EqualFold("JWT", tokens[0]) {
 		panic(authentication.ErrJwtValidation)
@@ -66,9 +66,9 @@ func (j *Jwt) ParseJwt(token string) (*Claims, error) {
 		}
 		return []byte(j.publicKey), nil
 	})
-	fmt.Println(tokenClaims.Claims)
 
-	if claims, ok := tokenClaims.Claims.(*Claims); ok && tokenClaims.Valid {
+	claims, ok := tokenClaims.Claims.(jwt.MapClaims)
+	if ok && tokenClaims.Valid {
 		return claims, nil
 	}
 
